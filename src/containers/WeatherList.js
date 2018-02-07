@@ -4,8 +4,8 @@ import { Table } from 'semantic-ui-react';
 import Chart from '../components/Chart';
 import CityGoogleMap from '../components/CityGoogleMap';
 
-const WeatherList = ({ weather }) => {
-    console.log(weather);
+const WeatherList = ({ cities }) => {
+    console.log(cities);
 
     const renderWeather = (cityData) => {
         const temps = [];
@@ -48,14 +48,14 @@ const WeatherList = ({ weather }) => {
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                { weather.map((cityData) => renderWeather(cityData)) }
+                { cities.map((cityData) => renderWeather(cityData)) }
             </Table.Body>
         </Table>
     );
 }
 
 const mapStateToProps = ({ weather }) => ({
-    weather
+    cities: weather.cities
 });
 
 export default connect(mapStateToProps)(WeatherList);

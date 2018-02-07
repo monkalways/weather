@@ -1,46 +1,47 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Form, Input } from 'semantic-ui-react';
-import { startSearch } from '../actions/index';
+import { startSearch, changeTerm } from '../actions/index';
 
-class SearchBar extends Component {
-    state = { 
-        term: '', 
-        loading: false 
+const SearchBar = ({ loading, term, startSearch, changeTerm }) => {
+
+    const handleChange = (event, data) => {
+        const term = data.value;
+        changeTerm(term);
     }
 
-    handleChange = (e, { name, value }) => this.setState({ [name]: value })
-
-    handleSubmit = () => {
-        const { term } = this.state;
-        this.setState({ loading: true });
-        this.props.startSearch(term);
+    const handleSubmit = () => {
+        startSearch(term);
     }
 
-    render() {
-        return (
-            <Form onSubmit={this.handleSubmit}>
-                <div>
-                    <Input 
-                        name='term'
-                        placeholder='Search...'
-                        icon='search'
-                        value={this.state.term} 
-                        onChange={this.handleChange} 
-                        fluid 
-                        loading={this.state.loading} 
-                    />
-                </div>
-            </Form>
-        );
-    }
+    return (
+        <Form onSubmit={handleSubmit}>
+            <div>
+                <Input 
+                    name='term'
+                    placeholder='Search...'
+                    icon='search'
+                    value={term} 
+                    onChange={handleChange} 
+                    fluid 
+                    loading={loading} 
+                />
+            </div>
+        </Form>
+    );
 }
+
+const mapStateToProps = ({ weather }) => ({
+    loading: weather.loading,
+    term: weather.term
+});
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
-        startSearch: startSearch
+        startSearch,
+        changeTerm
     }, dispatch);
 }
 
-export default connect(undefined, mapDispatchToProps)(SearchBar);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
