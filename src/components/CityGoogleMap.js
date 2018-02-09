@@ -10,13 +10,24 @@ const mapDivStyle = {
 class GoogleMap extends Component {
 
     componentDidMount() {
-        new google.maps.Map(this.mapDivElement, {
+        this.map = new google.maps.Map(this.mapDivElement, {
             zoom: 12,
             center: {
                 lat: this.props.lat,
                 lng: this.props.lon
             }
         });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.map.panTo({
+            lat: nextProps.lat,
+            lng: nextProps.lon
+        });
+    }
+
+    shouldComponentUpdate() {
+        return false;
     }
 
     render() {
